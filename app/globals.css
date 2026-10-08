@@ -1,0 +1,59 @@
+@import '@fontsource-variable/montserrat';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --midnight: #081020;
+  --gold: #d4a53a;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #050810;
+  color: #fff;
+  font-family: 'Montserrat Variable', Montserrat, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+:focus-visible { outline: 3px solid #f2ce6b; outline-offset: 3px; border-radius: 6px; }
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8; }
+  .btn { @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5; }
+  .btn-gold { @apply btn bg-gold-grad text-[#1a1203] shadow-gold hover:brightness-110; }
+  .btn-outline { @apply btn border border-gold/70 bg-white/[0.03] text-white hover:bg-gold/10; }
+  .btn-ghost { @apply inline-flex min-h-[44px] items-center gap-2 text-sm font-semibold text-white hover:text-gold-light; }
+  .eyebrow { @apply text-[11px] font-medium uppercase tracking-[0.35em] text-slate2; }
+  .gold-text { @apply bg-gold-grad bg-clip-text text-transparent; }
+  .h-display { @apply font-extrabold leading-[1.05] tracking-tight; }
+  .band { @apply border-t border-gold/25 bg-midnight; }
+  .gold-frame { @apply rounded-2xl border border-gold/40 bg-gradient-to-br from-[#10192e] to-[#0a1222]; }
+  .light-panel { @apply rounded-2xl bg-white text-[#0b1220] shadow-2xl; }
+  .field { @apply w-full rounded-lg border border-white/20 bg-white/[0.06] px-3.5 py-3 text-sm text-white placeholder:text-slate2 focus:border-gold; }
+}
+
+.photo-block {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 70% 10%, rgba(242,206,107,.45), transparent 55%),
+    radial-gradient(100% 80% at 10% 100%, rgba(184,134,43,.5), transparent 60%),
+    linear-gradient(160deg, #1b2440, #0a1222 70%);
+}
+.photo-block::after {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 14px);
+}
+.hero-glow {
+  background:
+    radial-gradient(60% 70% at 78% 35%, rgba(212,165,58,.22), transparent 65%),
+    radial-gradient(40% 50% at 100% 20%, rgba(212,165,58,.18), transparent 70%),
+    linear-gradient(180deg, #081020, #060b17);
+}
+.dots-face {
+  background-image: radial-gradient(circle, rgba(242,206,107,.85) 1.2px, transparent 1.6px);
+  background-size: 9px 9px;
+  -webkit-mask-image: radial-gradient(70% 90% at 80% 50%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(70% 90% at 80% 50%, #000 30%, transparent 75%);
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
