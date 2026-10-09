@@ -31,7 +31,7 @@ export function LeadForm({ defaultKind = 'demo', compact = false }: { defaultKin
 
   if (state === 'sent' || state === 'queued') {
     return (
-      <div role="status" className="rounded-2xl border border-gold/40 bg-white/5 p-6">
+      <div role="status" className="rounded-2xl border border-gold/40 lead-confirmation bg-white/5 p-6">
         <p className="text-lg font-bold gold-text">Thank you. We have your request.</p>
         <p className="mt-2 text-sm text-white/85">
           {state === 'sent'

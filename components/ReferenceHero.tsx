@@ -1,0 +1,3 @@
+import Image from 'next/image';
+import type { ReactNode } from 'react';
+export function ReferenceHero({title,children,actions,image,note}:{title:ReactNode;children:ReactNode;actions:ReactNode;image:string;note?:ReactNode}){return <section className="reference-hero"><Image src={image} alt="" fill priority sizes="100vw" className="reference-hero-image"/><div className="reference-hero-shade"/><div className="container-x reference-hero-content"><div className="reference-hero-copy"><h1>{title}</h1><p>{children}</p><div className="reference-actions">{actions}</div></div>{note&&<p className="reference-handwriting">{note}</p>}</div></section>}

@@ -1,56 +1,7 @@
-import type { Metadata } from 'next';
-import { CheckCircle2 } from 'lucide-react';
-import { PageHero, GoldBtn } from '@/components/ui';
-import { DeviceIllustration, type DeviceKind } from '@/components/Devices';
-import { LeadForm } from '@/components/LeadForm';
-
-export const metadata: Metadata = {
-  title: 'Hardware',
-  description: 'FACEPAY POS with screen, tap module, kiosk and handheld terminal. Illustrative designs for retail, transport, hospitality and field use.',
-  alternates: { canonical: '/hardware' },
-};
-const devices: { k: DeviceKind; n: string; d: string }[] = [
-  { k: 'pos', n: 'POS with Screen', d: 'Countertop terminal with customer display and face-capture module for retail and hospitality.' },
-  { k: 'tap', n: 'Tap Module', d: 'Compact NFC and QR attachment that adds FACEPAY to an existing POS.' },
-  { k: 'kiosk', n: 'Kiosk', d: 'Self-service stand for transport hubs, clinics, fuel forecourts and public services.' },
-  { k: 'handheld', n: 'Handheld', d: 'Mobile terminal for field staff, delivery, queues and events.' },
-];
-export default function Hardware() {
-  return (
-    <>
-      <PageHero eyebrow="Buy FACEPAY hardware" title="Built for Merchants." gold="Ready for What's Next.">
-        Secure, elegant devices that bring biometric payments to the real world. Device designs are illustrative: specifications, certification status and pricing are not yet verified.
-      </PageHero>
-      <section className="band py-10">
-        <div className="container-x">
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {devices.map((d) => (
-              <li key={d.k} className="gold-frame p-5">
-                <DeviceIllustration kind={d.k} className="mx-auto w-full max-w-[260px]" />
-                <h2 className="mt-2 text-base font-bold">{d.n}</h2>
-                <p className="mt-1 text-xs leading-relaxed text-white/80">{d.d}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
-            <div>
-              <h2 className="h-display text-2xl uppercase">Made for <span className="gold-text">every environment</span></h2>
-              <ul className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                {['Retail', 'Transport', 'Hospitality', 'Field use'].map((x) => <li key={x} className="flex gap-2"><CheckCircle2 size={18} className="text-gold" aria-hidden />{x}</li>)}
-              </ul>
-              <ul className="mt-5 space-y-1.5 text-xs text-white/85">
-                {['Fast, contactless face payments', 'Supports QR, NFC and cards', 'Easy integration with your systems', 'Reliable, scalable and future-ready'].map((x) => <li key={x}>• {x}</li>)}
-              </ul>
-              <p className="mt-4 text-xs text-slate2">No raw biometrics are stored on devices. Payments are only shown as complete after provider confirmation.</p>
-              <div className="mt-5"><GoldBtn href="#hw-enquiry">Enquire about hardware</GoldBtn></div>
-            </div>
-            <div id="hw-enquiry" className="gold-frame scroll-mt-24 p-6">
-              <h2 className="mb-4 text-lg font-bold">Hardware enquiry</h2>
-              <LeadForm defaultKind="hardware" />
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
+import type {Metadata} from 'next';
+import Image from 'next/image';
+import {GoldBtn,OutlineBtn} from '@/components/ui';
+import {LeadForm} from '@/components/LeadForm';
+export const metadata:Metadata={title:'Hardware',description:'Explore FacePay POS, tap module, kiosk and handheld device concepts.'};
+const devices=[['POS with Screen','Countertop payment terminal for retail and hospitality.'],['Tap Module','Attach FacePay to your existing point of sale.'],['Kiosk','Self-service payments for public spaces.'],['Handheld','Portable payments for your business.']];
+export default function Hardware(){return <><section className="reference-hardware container-x"><div className="reference-section-title"><p>FacePay Hardware</p><h1>Accept FacePay anywhere.</h1><span>One platform. Software, hardware, everywhere.</span></div><div className="hardware-family"><Image src="/media/hardware.webp" alt="FacePay countertop POS, compact tap module, self-service kiosk and handheld terminal concept designs" width={1536} height={1024} priority/></div><ul>{devices.map(([name,desc])=><li key={name}><h2>{name}</h2><p>{desc}</p></li>)}</ul><div className="reference-actions justify-center"><GoldBtn href="#hw-enquiry">Enquire about hardware</GoldBtn><OutlineBtn href="https://facepay-app-beta.vercel.app/device" ext>Try the device demo</OutlineBtn></div><p className="reference-disclaimer text-center">Product concepts shown. Specifications, certification, availability and prices require confirmation.</p></section><section className="reference-light"><div className="container-x grid gap-8 lg:grid-cols-2" id="hw-enquiry"><div><h2 className="text-3xl font-bold">Made for every environment.</h2><p className="mt-4 text-sm text-slate-600">Retail, transport, hospitality and field use. Explore FacePay integration for your business.</p><p className="mt-3 text-xs text-slate-600">Demo transactions are simulations. No raw biometric data is collected by the device demo.</p></div><div className="reference-card light-lead"><h2 className="!text-xl mb-4">Hardware enquiry</h2><LeadForm defaultKind="hardware"/></div></div></section></>}

@@ -10,7 +10,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   return (
-    <header className="absolute inset-x-0 top-0 z-40">
+    <header className="reference-header absolute inset-x-0 top-0 z-40">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-gold focus:px-3 focus:py-2 focus:text-black">
         Skip to content
       </a>

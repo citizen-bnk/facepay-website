@@ -43,9 +43,9 @@ export function PhotoBlock({ label, caption, src, className = '', ratio = '4/3' 
         <img src={src} alt={label} className="absolute inset-0 h-full w-full object-cover" />
       )}
       {!src && <span role="img" aria-label={`${label} (placeholder image)`} className="absolute inset-0" />}
-      <svg aria-hidden viewBox="0 0 100 100" className="absolute left-1/2 top-[42%] h-1/3 -translate-x-1/2 -translate-y-1/2 text-gold-light/40" fill="currentColor">
+      {!src && <svg aria-hidden viewBox="0 0 100 100" className="absolute left-1/2 top-[42%] h-1/3 -translate-x-1/2 -translate-y-1/2 text-gold-light/40" fill="currentColor">
         <circle cx="50" cy="34" r="16" /><path d="M16 92c0-22 15-36 34-36s34 14 34 36z" />
-      </svg>
+      </svg>}
       {caption !== undefined && (
         <figcaption className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/85 to-transparent p-3 pt-8">
           <span className="block text-[11px] font-bold uppercase tracking-wider">{label}</span>
