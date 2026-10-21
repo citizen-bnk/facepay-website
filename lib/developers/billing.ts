@@ -46,19 +46,24 @@ export async function checkout(account: DeveloperAccount) {
   if (current.subscription_status === 'active') throw new DeveloperError(409, 'already_subscribed', 'Your subscription is active. Use Manage billing.');
   // Reuse an open Checkout to avoid duplicate subscriptions from double clicks or refreshes.
   const sessions = await stripe.checkout.sessions.list({ customer: customerId, status: 'open', limit: 20 });
-  const open = sessions.data.find(s => s.metadata?.facepay_user_id === account.user_id && s.mode === 'subscription');
+  const ownOpen = sessions.data.filter(s => s.metadata?.facepay_user_id === account.user_id && s.mode === 'subscription');
+  const open = ownOpen.find(s => s.currency === 'usd' && s.adaptive_pricing?.enabled === false);
+  // Retire checkouts created before the fixed-USD pricing policy.
+  for (const session of ownOpen) if (session !== open) await stripe.checkout.sessions.expire(session.id);
   if (open?.url) return open.url;
   const attempt = await db`INSERT INTO developer_checkout_attempts(user_id,attempt_id) VALUES(${account.user_id},${randomBytes(16).toString('hex')}) ON CONFLICT(user_id) DO UPDATE SET attempt_id=CASE WHEN developer_checkout_attempts.started_at < now()-interval '31 minutes' THEN EXCLUDED.attempt_id ELSE developer_checkout_attempts.attempt_id END,started_at=CASE WHEN developer_checkout_attempts.started_at < now()-interval '31 minutes' THEN now() ELSE developer_checkout_attempts.started_at END RETURNING attempt_id,started_at`;
   const price = process.env.STRIPE_DEVELOPER_PRICE_ID;
   if (!price) throw new DeveloperError(503, 'price_unavailable', 'Developer subscription price is not configured.');
   const session = await stripe.checkout.sessions.create({
-    mode: 'subscription', customer: customerId, line_items: [{ price, quantity: 1 }],
+    mode: 'subscription', adaptive_pricing: { enabled: false },
+    branding_settings: { display_name: 'FACEPAY', background_color: '#0B0B0B', button_color: '#D4AF37', border_style: 'rounded', logo: { type: 'url', url: siteUrl() + '/brand/facepay_logo_compact_dark.png' } },
+    customer: customerId, line_items: [{ price, quantity: 1 }],
     client_reference_id: account.user_id, metadata: { facepay_user_id: account.user_id },
     subscription_data: { metadata: { facepay_user_id: account.user_id } },
     success_url: siteUrl() + '/developers/console?checkout=success', cancel_url: siteUrl() + '/developers/console?checkout=cancelled',
     integration_identifier: 'facepay_developers_' + String(attempt[0].attempt_id).slice(0,8).split('').map(n=>String.fromCharCode(97+parseInt(n,16))).join(''),
     expires_at: Math.floor(Date.parse(attempt[0].started_at)/1000) + 7200,
-  }, { idempotencyKey: 'facepay-checkout-' + attempt[0].attempt_id });
+  }, { idempotencyKey: 'facepay-checkout-usd-v2-' + attempt[0].attempt_id });
   if (!session.url) throw new DeveloperError(503, 'checkout_failed', 'Stripe did not return a checkout URL.');
   return session.url;
 }
