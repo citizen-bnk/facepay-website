@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function Logo({ height = 44, href = '/' }: { height?: number; href?: string | null }) {
+export function Logo({ height = 32, href = '/' }: { height?: number; href?: string | null }) {
   const img = (
     <Image
-      src="/logo-full.png"
-      alt="FACEPAY - Face Your Money"
-      width={Math.round(height * 4.346)}
+      src="/brand/facepay_logo_compact_dark.png"
+      alt="FACEPAY — Face your money."
+      width={Math.round(height * 5.279)}
       height={height}
       priority
       style={{ height, width: 'auto' }}
