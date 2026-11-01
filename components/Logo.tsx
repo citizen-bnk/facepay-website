@@ -5,7 +5,7 @@ export function Logo({ height = 32, href = '/' }: { height?: number; href?: stri
   const img = (
     <Image
       src="/brand/facepay_logo_compact_dark.png"
-      alt="FACEPAY — Face your money."
+      alt="Face Pay Digital Platform — Face your money."
       width={Math.round(height * 5.279)}
       height={height}
       priority
@@ -14,7 +14,7 @@ export function Logo({ height = 32, href = '/' }: { height?: number; href?: stri
   );
   if (!href) return img;
   return (
-    <Link href={href} aria-label="FACEPAY home" className="inline-block">
+    <Link href={href} aria-label="Face Pay Digital Platform home" className="inline-block">
       {img}
     </Link>
   );

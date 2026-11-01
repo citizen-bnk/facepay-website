@@ -8,31 +8,19 @@ export interface LeadInput {
   message: string;
   kind: LeadKind;
 }
-export type LeadResult = { status: 'sent' } | { status: 'queued' } | { status: 'error'; message: string };
+export type LeadResult = { status: 'sent' } | { status: 'error'; message: string };
 
-const QUEUE_KEY = 'facepay.leadQueue';
-
-function queueLocally(lead: LeadInput) {
-  try {
-    const q = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
-    q.push({ ...lead, queuedAt: new Date().toISOString() });
-    localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
-  } catch {
-    /* storage unavailable: still show graceful state */
-  }
-}
-
-/** POSTs to `${NEXT_PUBLIC_API_URL}/v1/leads`; queues locally when the API is unset. */
+/** Confirm delivery only after the enquiry service accepts the request. */
 export async function submitLead(lead: LeadInput): Promise<LeadResult> {
   if (!API_URL) {
-    queueLocally(lead);
-    return { status: 'queued' };
+    return { status: 'error', message: 'Online enquiries are not available yet. Your request has not been sent.' };
   }
   try {
     const res = await fetch(`${API_URL.replace(/\/$/, '')}/v1/leads`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lead),
+      signal: AbortSignal.timeout(15000),
     });
     if (!res.ok) {
       let message = 'Something went wrong. Please try again.';
@@ -44,7 +32,6 @@ export async function submitLead(lead: LeadInput): Promise<LeadResult> {
     }
     return { status: 'sent' };
   } catch {
-    queueLocally(lead);
-    return { status: 'queued' };
+    return { status: 'error', message: 'Your request could not be confirmed. Check your connection and try again later.' };
   }
 }

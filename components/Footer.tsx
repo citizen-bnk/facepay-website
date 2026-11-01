@@ -33,10 +33,10 @@ export function Footer() {
         </div>
         <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs text-slate2 md:flex-row md:justify-between">
           <p className="max-w-3xl">
-            FACEPAY is an integration layer connecting consent-based identity verification to authorised payment partners. FACEPAY is not a bank and
+            Face Pay Digital Platform is an integration layer connecting consent-based identity verification to authorised payment partners. FACEPAY is not a bank and
             does not claim any banking licence or regulatory approval. Pricing, hardware and screens shown are illustrative concepts and are not verified.
           </p>
-          <p className="shrink-0">© {new Date().getFullYear()} FACEPAY. All rights reserved.</p>
+          <p className="shrink-0">© {new Date().getFullYear()} Face Pay Digital Platform.</p>
         </div>
       </div>
     </footer>

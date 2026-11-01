@@ -6,17 +6,17 @@ import { SITE_URL } from '@/lib/config';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: 'FACEPAY | One Identity. Many Ways to Pay.', template: '%s | FACEPAY' },
+  title: { default: 'Face Pay Digital Platform | One Identity. Many Ways to Pay.', template: '%s | Face Pay Digital Platform' },
   description:
-    'FACEPAY is an integration platform connecting people, merchants, software and hardware across payment ecosystems. Face Your Money.',
-  applicationName: 'FACEPAY',
+    'Face Pay Digital Platform connects people, merchants, software and hardware across payment ecosystems. Explore our platform and sandbox.',
+  applicationName: 'Face Pay Digital Platform',
   keywords: ['FACEPAY', 'face payments', 'biometric payments', 'South Africa', 'POS', 'payment integration'],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    siteName: 'FACEPAY',
+    siteName: 'Face Pay Digital Platform',
     locale: 'en_ZA',
-    title: 'FACEPAY | One Identity. Many Ways to Pay.',
+    title: 'Face Pay Digital Platform | One Identity. Many Ways to Pay.',
     description: 'An integration platform connecting people, merchants, software and hardware across payment ecosystems.',
     images: [{ url: '/og.png', width: 1200, height: 630, alt: 'FACEPAY - Face Your Money' }],
   },

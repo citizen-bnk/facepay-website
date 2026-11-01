@@ -1,6 +1,7 @@
 'use client';
 import { useId, useState } from 'react';
 import { submitLead, type LeadKind } from '@/lib/leads';
+import { API_URL } from '@/lib/config';
 
 const kinds: { v: LeadKind; l: string }[] = [
   { v: 'demo', l: 'Request a demo' },
@@ -11,7 +12,7 @@ const kinds: { v: LeadKind; l: string }[] = [
 export function LeadForm({ defaultKind = 'demo', compact = false }: { defaultKind?: LeadKind; compact?: boolean }) {
   const id = useId();
   const [kind, setKind] = useState<LeadKind>(defaultKind);
-  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'queued' | 'error'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [err, setErr] = useState('');
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -29,14 +30,12 @@ export function LeadForm({ defaultKind = 'demo', compact = false }: { defaultKin
     if (r.status === 'error') { setErr(r.message); setState('error'); } else setState(r.status);
   }
 
-  if (state === 'sent' || state === 'queued') {
+  if (state === 'sent') {
     return (
       <div role="status" className="rounded-2xl border border-gold/40 lead-confirmation bg-white/5 p-6">
         <p className="text-lg font-bold gold-text">Thank you. We have your request.</p>
         <p className="mt-2 text-sm text-white/85">
-          {state === 'sent'
-            ? 'Our team will be in touch shortly.'
-            : 'Our servers are not connected in this environment, so your request has been saved in a local queue on this device and will be sent once the service is available.'}
+          Our team will be in touch shortly.
         </p>
       </div>
     );
@@ -75,10 +74,11 @@ export function LeadForm({ defaultKind = 'demo', compact = false }: { defaultKin
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <p id={`${id}-note`} className="text-xs text-slate2">
         We use these details only to respond to your enquiry. No biometric data is collected on this form.
+        {!API_URL && ' Online enquiries are not available yet; this form cannot send requests.'}
       </p>
       {state === 'error' && <p role="alert" className="text-sm text-red-300">{err}</p>}
-      <button type="submit" disabled={state === 'sending'} className="btn-gold w-full disabled:opacity-60">
-        {state === 'sending' ? 'Sending...' : kind === 'demo' ? 'Request a Demo' : 'Send enquiry'}
+      <button type="submit" disabled={!API_URL || state === 'sending'} className="btn-gold w-full disabled:opacity-60">
+        {!API_URL ? 'Enquiries coming soon' : state === 'sending' ? 'Sending...' : kind === 'demo' ? 'Request a Demo' : 'Send enquiry'}
       </button>
     </form>
   );
